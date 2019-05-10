@@ -1,0 +1,38 @@
+CNOT[n0_,h0_,k0_]:=Module[{n=n0,h=h0,k=k0},U=IdentityMatrix[2^n];
+Do[cindex=IntegerDigits[i-1,2,n];
+If[cindex[[n-h]]==1,cindex[[n-k]]=Mod[cindex[[n-k]]+1,2]];
+s=Sum[cindex[[r]]*2^(n-r),{r,1,n}]+1;
+U[[i]]=Table[KroneckerDelta[s,j],{j,1,2^n}],{i,1,2^n}];U]
+
+(*CNOT gates, Hadamard matrix, Pauli matrices, P2*)
+H={{1,1},{1,-1}}/Sqrt[2];
+x={{0,1},{1,0}};
+y={{0,-I},{I,0}};
+z={{1,0},{0,-1}};
+DX = DiagonalMatrix[{1, -1, 1, -1}];
+DY = DiagonalMatrix[{-1, -1, 1, 1}]; 
+DZ = DiagonalMatrix[{1, -1, -1, 1}];
+P2=CNOT[2,0,1] . KroneckerProduct[IdentityMatrix[2],H] . Transpose[CNOT[2,0,1]];
+
+
+(*build the error operators*)
+X[n_]:=X[n]=KroneckerProduct[X[n-1],x]; X[1]=x;
+Y[n_]:=Y[n]=KroneckerProduct[Y[n-1],y]; Y[1]=y;
+Z[n_]:=Z[n]=KroneckerProduct[Z[n-1],z]; Z[1]=z;
+
+(*define P_n*)
+Q[k_]:=Q[k]=KroneckerProduct[IdentityMatrix[4],Q[k-1]] . 
+KroneckerProduct[Q[1],IdentityMatrix[2^(2k-2)]];
+Q[1]=CNOT[3,1,0] . CNOT[3,0,2] . CNOT[3,2,1];
+
+R[k_]:=KroneckerProduct[IdentityMatrix[2],Q[k-1]] . 
+KroneckerProduct[P2,IdentityMatrix[2^(2k-2)]];
+
+(*verify functionality*)
+Norm[Transpose[Q[3]].X[7].Q[3] - KroneckerProduct[x,IdentityMatrix[2^6]]]
+Norm[Transpose[Q[3]].Y[7].Q[3] - (-1)^3*KroneckerProduct[y,IdentityMatrix[2^6]]]
+Norm[Transpose[Q[3]].Z[7].Q[3] - KroneckerProduct[z,IdentityMatrix[2^6]]]
+
+Norm[Transpose[R[3]].X[6].R[3] - KroneckerProduct[DX,IdentityMatrix[2^4]]]
+Norm[Transpose[R[3]].Y[6].R[3] - (-1)^2*KroneckerProduct[DY,IdentityMatrix[2^4]]]
+Norm[Transpose[R[3]].Z[6].R[3] - KroneckerProduct[DZ,IdentityMatrix[2^4]]]
