@@ -740,11 +740,48 @@ Similar to the other methods, we can verify the results in Python.
 This is convenient because IBM has provided the \verb|qiskit| framework, and the encoding matrices
 can be extracted from the circuit build.
 
+In contrast to the matrix operations of sections A and B, the recursive scheme operates on the quantum circuit itself. For convenience, the imports have been omitted. 
 
+To initialize a quantum circuit, we first create qubits using \verb|qr = QuantumRegister(n)| and classical bits for measurement with \verb|cr = ClassicalRegister(n)|. The quantum circuit is constructed by the \verb|qc = QuantumCircuit(qr, qc)|. To verify functionality, we can apply arbitrary unitary operations to initialize the state to a given vector. Then, the encoding scheme is defined recursively:
+
+\begin{verbatim}
+    def build_circ(qc, q, E):
+        n = q[-1][1] + 1 # number of qubits
+
+        def err(e, base=False):
+            d = {'X':qc.x, 'Y':qc.y, 'Z':qc.z, 'I':lambda x: None} # apply errors
+            d[e](q[n-1])
+            if base: # if we're at q3
+                d[e](q[0])
+                d[e](q[1])
+        
+        if n % 2 == 0: # qn is even
+            qc.cx(q[n-2], q[n-1]) # encode with P_2
+            qc.h(q[n-2])
+            qc.cx(q[n-2], q[n-1])
+            build_circ(qc, q[:-1], E) #recurse
+            err(E)
+            qc.cx(q[n-2], q[n-1]) # decode with P_2^T
+            qc.h(q[n-2])
+            qc.cx(q[n-2], q[n-1])
+        else: # it's odd
+            qc.cx(q[n-1], q[n-2]) # encode with P_3
+            qc.cx(q[n-3], q[n-1])
+            qc.cx(q[n-2], q[n-3])
+            if n == 3: # base case
+                err(E, True)
+            else:
+                build_circ(qc, q[:-1], E) #recurse
+                err(E)
+            qc.cx(q[n-2], q[n-3]) # decode with P_3^T
+            qc.cx(q[n-3], q[n-1])
+            qc.cx(q[n-1], q[n-2])
+        return()
+\end{verbatim}
 
 \subsection{Using IBM's simulated quantum computer}
 
-We can use the IBM's \verb|qasm| quantum computer simulator to validate our scheme. 
+We can use the IBM's \verb|qasm| quantum computer simulator to validate our scheme. The results are identical to the above two sections, so we omit them here. All code is available at the github link at the beginning of the appendix.
 
 \noindent
  %\begin{minipage}[t]{0.64\columnwidth}
@@ -776,7 +813,7 @@ One may do simulation and get the statistics for $n = 4,5,6$, etc.
 
 \subsection{Using IBM's quantum computer}
 
-We can use the IBM's on line quantum computer (with noise) to implement our scheme.
+We can use the IBM's online quantum computer (with noise) to implement our scheme.
 
 For $n = 3$, we input $|000\ra$ and use the error operators $X_3, Y_3, Z_3$ 
 in three different experiments using the following circuit 
@@ -804,7 +841,7 @@ One should high probability of decoded state: $|q_1q_0\ra = V|00\ra$.
 
 
 Here we illustrate our hybrid quantum error correction scheme for $n$-qubit system
-when $n$ is odd. In particular, we use the IBM's on line quantum computer to do the
+when $n$ is odd. In particular, we use the IBM's online quantum computer to do the
 $n = 3, 5$ cases to demonstrate the scheme including the recursion step.
 
 Consider the correlated channel $\cE: M_8 \rightarrow M_8$ such that
@@ -907,7 +944,7 @@ Then we take the partial trace by adding the $(1,1)$ and $(2,3)$ blocks.
 \section{Hybrid codes for the correlated channel}
 
 Here we illustrate our hybrid quantum error correction scheme for $n$-qubit system
-when $n$ is even. In particular, we use the IBM's on line quantum computer to do the
+when $n$ is even. In particular, we use the IBM's online quantum computer to do the
 $n = 4, 6$ cases to demonstrate the scheme including the recursion step.
 
 Let $(X_4,Y_4,Z_4) = (X^{\otimes 4},Y^{\otimes 4},Z^{\otimes 4})$
