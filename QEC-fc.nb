@@ -1,3 +1,5 @@
+(*Yiu Tung Poon May 2019*)
+(*Code to verify Error Correlation Schemes*)
 CNOT[n0_,h0_,k0_]:=Module[{n=n0,h=h0,k=k0},U=IdentityMatrix[2^n];
 Do[cindex=IntegerDigits[i-1,2,n];
 If[cindex[[n-h]]==1,cindex[[n-k]]=Mod[cindex[[n-k]]+1,2]];
@@ -36,3 +38,8 @@ Norm[Transpose[Q[3]].Z[7].Q[3] - KroneckerProduct[z,IdentityMatrix[2^6]]]
 Norm[Transpose[R[3]].X[6].R[3] - KroneckerProduct[DX,IdentityMatrix[2^4]]]
 Norm[Transpose[R[3]].Y[6].R[3] - (-1)^2*KroneckerProduct[DY,IdentityMatrix[2^4]]]
 Norm[Transpose[R[3]].Z[6].R[3] - KroneckerProduct[DZ,IdentityMatrix[2^4]]]
+
+(*test errors*)
+MatrixForm[Transpose[P2] . X[2] . P2]
+MatrixForm[Transpose[P2] . Y[2] . P2]
+MatrixForm[Transpose[P2] . Z[2] . P2]

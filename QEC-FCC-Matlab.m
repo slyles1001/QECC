@@ -3,6 +3,7 @@
 %
 %%% Speicify an integer n > 1, the following commands will generate the encoding matrix P_n
 %
+%%% CK Li May 2019
 if mod(n,2) == 1   
        P = eye(8); P3 = P(:,[1,6,4,7,8,3,5,2]); Pn = P3;
           k = (n-1)/2;
