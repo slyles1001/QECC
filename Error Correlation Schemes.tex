@@ -1,4 +1,3 @@
-
 \documentclass[11pt]{article}
 %\baselineskip 16pt
 \usepackage{amsmath}
@@ -422,7 +421,7 @@ For odd $n$, the circuit diagram will be
 \end{equation*}
 \medskip
 For even $n$, 
-if $|q_{n}q_{n-1}\ra \in \{ |00\ra, |10\ra, |01 \ra, |11\ra\}$,
+if $|q_{n-1}q_{n-2}\ra \in \{ |00\ra, |10\ra, |01 \ra, |11\ra\}$,
 then the circuit diagram will look like:
 \begin{equation*}
 \Qcircuit @C=1em @R=1.0em @!R {
@@ -433,17 +432,60 @@ then the circuit diagram will look like:
     }
 \end{equation*}
 
+\section{Concluding remarks and future work}
 
-\vskip 1in 
-
-\section{Conclusion and future work}
 
 We obtain an efficient error correction  
 scheme for fully correlated quantum channels
 protecting both quantum and classical information.
 The scheme was implemented using Matlab, Mathematica and
 the IBM's quantum computing framework \verb|qiskit|.
-We plan to extend the techniques to more general quantum channels 
+
+\medskip
+Several remarks are in order concerning the implementation.
+
+In Matlab, the we generate the encoding operation $P_n$ for $n \ge 2$, and check 
+the properties described in Propositions \ref{2.1} -- \ref{2.4}.
+Note that when the dimension is high, the matrices $P_n, X_n$, etc.\ are too big to display,
+and there are too many entries to check (though most of them are zeros).
+So, we just use the command \verb|norm(Pn'*Zn*AA*Zn*Pn - kron(S,R))| to compute the norm
+of the matrix $P_n^\dag Z_n P_n(\sigma \otimes \rho)P_n^\dag Z_n P_n - \sigma \otimes \rho$
+to confirm that it gives zero (up to machine error). In fact, in the odd case, when 
+we do not use the Hadamard gate to do encoding and decoding, the norm values of
+the relevant matrices are exactly 0; in the even case, when the Hadamard gate 
+is used (once in encoding and once in decoding), the norm value of matrices 
+will yield a number at the order of the machine error. 
+
+
+In Mathematica,
+the computation of the norm of the matrix 
+$P_n^\dag \cE( P_n (\sigma \otimes \rho) P_n^\dag) P_n  
+-\tilde \sigma \otimes \rho$ is always exactly 0 even if the Hadamard
+gate is used in the even case.
+Here $\tilde \sigma  = p_0 \sigma + p_1 X\sigma X^\dag + p_2 Y \sigma Y^\dag 
++ p_3 Z \sigma Z^\dag \in D_2$ if $n$ is odd and 
+$\sigma = \tilde \sigma \in D_4$ is one of the 4 classical binary bits if 
+$n$ is even. This is due to Mathematica being an algebraic solver versus Matlab and Python.
+
+In the IBM quantum computer setting, it is interesting to note that 
+for $U \in \{I_2, X, Y, Z\}$, 
+when we apply the encoding scheme to 3-qubit
+$P_3 |q_2q_1q_0\ra$, then the error operator 
+$U^{\otimes 3}P_3 |q_2 q_1 q_0\ra$, and then the operator
+$P_n^\dag U^{\otimes 3}P_3 |q_2 q_1 q_0\ra$, the second
+qubit always attracts more error compared with the expected output $|q_2 q_1 Uq_0\ra$,
+even for the case when $U = I_2$. (See the figure in Appendix C.2.)
+It is curious to know why such a noise
+pattern will happen to our scheme.
+
+We may see whether 4-qubit, 5-qubit case also produce some funny noise pattern.
+
+
+ 
+
+\medskip
+For future research, 
+we plan to extend the techniques to more general quantum channels 
 such as the fully correlated quantum channels on $n$-qubits
 with general noise of the form $U^{\otimes n}$, where $U \in M_2$
 is unitary.
@@ -637,17 +679,6 @@ will confirm the scheme works.
 \end{verbatim}
 
 
-\medskip\noindent
-\begin{remark} \rm
-Note that when the dimension is high, the matrices $P_n, X_n$, etc.\ are too big to display.
-So, we just use the command \verb|norm(Pn'*Zn*AA*Zn*Pn - kron(S,R))| to compute the norm
-of the matrix $P_n^\dag Z_n P_n(\sigma \otimes \rho)P_n^\dag Z_n P_n - \sigma \otimes \rho$
-to confirm that it gives zero (up to machine error). In fact, in the odd case, when 
-we do not use the Hadamard gate to do encoding and decoding, the norm values of
-the relevant matrices are exactly 0; in the even case, when the Hadamard gate 
-is used (once in encoding and once in decoding), the norm value of matrices 
-will yield a number at the order of the machine error. 
-\end{remark}
 
 \section{Mathematica results}
 
@@ -724,16 +755,7 @@ Norm[Transpose[R[3]].Z[6].R[3] - KroneckerProduct[DZ,IdentityMatrix[2^4]]]
 \noindent We can also check that for all $n\ge 3,\ \|P_n^\dag \cE( P_n (\sigma \otimes \rho) P_n^\dag) P_n  
 -\tilde \sigma \otimes \rho\|=0$.
 
-\begin{remark} \rm It is interesting to note that in Mathematica,
-the computation of the norm of the matrix 
-$P_n^\dag \cE( P_n (\sigma \otimes \rho) P_n^\dag) P_n  
--\tilde \sigma \otimes \rho$ is always exactly 0 even if the Hadamard
-gate is used in the even case.
-Here $\tilde \sigma  = p_0 \sigma + p_1 X\sigma X^\dag + p_2 Y \sigma Y^\dag 
-+ p_3 Z \sigma Z^\dag \in D_2$ if $n$ is odd and 
-$\sigma = \tilde \sigma \in D_4$ is one of the 4 classical binary bits if 
-$n$ is even. This is due to Mathematica being an algebraic solver versus Matlab and Python.
-\end{remark}
+
 
 \section{Python results}
 Similar to the other methods, we can verify the results in Python. 
@@ -786,7 +808,7 @@ We can use the IBM's \verb|qasm| quantum computer simulator to validate our sche
 \noindent
  %\begin{minipage}[t]{0.64\columnwidth}
 For example, when $n = 3$, we can input $|q_2q_1q_0\ra = |000\ra$,
-and use $I_8, X_3, Y_3, Z_n$ as the error operators, respectively. Or we can use the 
+and use $I_8, X_3, Y_3, Z_3$ as the error operators, respectively. Or we can use the 
 the error operators  ``blindly''. The simulation always give us the perfect statistics.
 For example, using input $|000\ra$ and error operator $X_3$, 
 the procedure in the following circuit diagram (IMB version of the one in Section 2.6) 
@@ -837,169 +859,4 @@ One should high probability of decoded state: $|q_1q_0\ra = V|00\ra$.
 
 
 \end{document}
-
-
-
-Here we illustrate our hybrid quantum error correction scheme for $n$-qubit system
-when $n$ is odd. In particular, we use the IBM's online quantum computer to do the
-$n = 3, 5$ cases to demonstrate the scheme including the recursion step.
-
-Consider the correlated channel $\cE: M_8 \rightarrow M_8$ such that
-$$\cE(\hat \rho) 
-= p_0 \hat \rho + p_1 X_3 \hat \rho X_3^\dag 
-+ p_2 Y_3 \hat \rho Y_3^\dag + p_3 Z_3 \hat \rho Z_3^\dag.$$
-Let $P_3$ be constructed in Section 2.
-We can do the following quantum error correction scheme using 1 
-arbitrary qubit (ancilla) $\sigma\in D_2$ to protect the 2 data qubit 
-$\rho \in D_4$.
-
-\begin{enumerate}
-
-\item
-Encoding: $\rho \mapsto P_3(\sigma \otimes \rho)P_3^t = \hat \rho$
-using the encoding matrix constructed in Section 2.
-
-Note that in the vector state form the encoding is done as
-$$|\psi_2 \psi_1 \psi_0\ra \mapsto P|\psi_2 \psi_1 \psi_0\ra \quad \hbox{ 
-if } \quad \sigma = |\psi_2\ra \la\psi_2|, 
-\ \ \rho_1 = |\psi_1\ra \la\psi_1|, 
-\ \ \rho_0 = |\psi_0\ra \la\psi_0|.$$
-
-\item  Then  
-\begin{eqnarray*}
-P_3^t[\cE(\hat \rho)]P_3
- &=& P_3^t \cE(\hat \rho) P_3 \\
-&=& p_0 (\sigma \otimes \rho) 
-+ p_1 [(X_1\sigma X_1^\dag) \otimes \rho] 
- + p_2 [(Y_1\sigma Y_1^\dag)\otimes \rho] 
- + p_3 [(Z_1\sigma Z_1^\dag)\otimes \rho] \\
-&=& 
-\tilde \sigma \otimes \rho.
-\end{eqnarray*}
-
-\item Recovering channel: 
-Note that $P_3^t(\cE(P_3(\sigma \otimes \rho)P_3^t)P_3 =
-\sigma \otimes \rho$. So, applying the map $\tilde \rho \mapsto 
-\tr_1(P_3^t\tilde \rho P_3)$ will recover $\rho$.
-\end{enumerate}
-
-\medskip\noindent
-{\bf Pseudo code.}
-
-\medskip
-Step 0. Prepare $\sigma \in D_2, \rho\in D_4$.
-
-
-\medskip
-Step 1. Apply the  encoding by $\sigma\otimes \rho\mapsto 
-P_3(\sigma\otimes \rho)P_3^t$.
-
-\medskip 
-Step 2. Apply the quantum correlated channel $\cE$.
-
-
-\medskip
-Step 3. Apply the decoding $X \mapsto \tr_1(P_3^tXP_3)$
-to get $\rho$ back.
-
-
-
-\iffalse
-\medskip\noindent
-{\bf  Remarks}
-
-In Step 0, we only need to test $\sigma, \rho = \rho_1 \otimes \rho_2$ 
-with 
-$$\sigma, \rho_1, \rho_2 \in \{e_1e_1^t, e_2e_2^t, (e_1e_2^t+e_2e_1^t)/2
-i(e_1e_2^t-e_2e_1^t)/2 \}.$$
-
-In Step 1. We need to use simple quantum gates (permutation matrices) to generate
-the desired permutation matrix $P$.
-
-In Step 2. 
-We use the controlled not gates: $C_{12}, C_{13}, C_{21}, C_{23},
-C_{31}, C_{32}$, where $C_{ij}$ is using the $i$th bit to controlled the 
-$j$th bit for $i \in \{1,2,3\}$ and $j \in \{1,2,3\}-\{i\}$.
-Every $C_{ij}$ is a product of 2 transpositions. In particular, we have
-$$C_{12} = (5,7)(6,8), \ C_{13} = (5,6),(7,8), \ C_{21} = (3,7)(4,8),$$
-$$C_{23} = (3,4)(7,8), \ C_{31} = (2,6)(4,8),  \ C_{32} = (2,4)(6,8).$$
-It turns out that 
-$$P = C_{21} C_{12} C_{31} C_{23} C_{12}.$$ 
-
-Note that when we apply $A \mapsto PAP^t$ for $A \in D_8$, the corresponding
-quantum circuit diagram should be $|\psi\ra \mapsto P |\psi \ra$, and the operations
-$C_{rs}$ should be from left to right as $C_{12}, C_{23}, C_{31}, C_{12}, C_{21}$.
- 
-In Step 3,   
-we can use Python program to generate the channel $\cE$.
-
-
-In Step 4, we can apply the decoding operation  $A \mapsto P^tAP$.
-In vector state form, $|\psi\ra \mapsto P^t |\psi\ra$.
-The sequence of controlled gates will be $C_{21}, C_{12}, C_{31}, C_{23}, C_{12}$.
-Then we take the partial trace by adding the $(1,1)$ and $(2,3)$ blocks.
-
-\fi
-
-\section{Hybrid codes for the correlated channel}
-
-Here we illustrate our hybrid quantum error correction scheme for $n$-qubit system
-when $n$ is even. In particular, we use the IBM's online quantum computer to do the
-$n = 4, 6$ cases to demonstrate the scheme including the recursion step.
-
-Let $(X_4,Y_4,Z_4) = (X^{\otimes 4},Y^{\otimes 4},Z^{\otimes 4})$
-Consider the correlated  quantum channel on a four-qubit
-system given by
-    \[ \cE(\rho) = p_0 \rho + p_1 X_4\rho X_4^\dag +  
-    p_2 Y_4\rho Y_4^\dag +  p_3 Z_4\rho Z_4^\dag, \]
-where $p_0, \dots , p_3$ are probabilities summing to $1$. 
-
-
-
-
-We can use this channel to ``protect'' 2 classical bit
-and 2 quantum bits represented as
-$\sigma \otimes \rho$, where 
-$\sigma \in \{|ij\ra \la ij|: 1 \le i, j \le 2\}$
-and $\rho \in D_4$. Here $|00\ra\la00|,
-|10\ra\la10|,|01\ra\la01|,|11\ra\la11|$
-correspond to the 2 classical bits $(00), (01), (10), (11)$.
-
-\medskip\noindent
-{\bf Pseudo code}
-
-Step 0. Consider a 4 qubit state of the form 
-$\sigma \otimes \rho$, where $\rho \in D_4$ and 
-$\sigma \in \{|ij\ra \la ij|: 1 \le i, j \le 2\}$.
-
-Step 1. Encoding:  $\sigma \otimes \rho\rightarrow 
-P_4(\sigma \otimes \rho)P_4^\dag$
-
-Step 2. Apply the correlated channel $\cE$. 
-
-Step 3. Decoding: $B \mapsto P_4^\dag BP_4$, and we should get
-$\sigma \otimes \rho$. 
-
-Step 4. We can measure the first 
-two bits to get the information for the classical bit,
-
-
-\qquad and keep the remaining 2-qubit state $\rho$.
-
-\medskip\noindent
-{\bf Remarks}
-
-In Step 0, we only need to test 
-$\sigma \in\{|00\ra\la00|,
-|10\ra\la10|,|01\ra\la01|,|11\ra\la11|\}$,
-i.e., the vector states $|00\ra, |01\ra, |10\ra, |11\ra$
-and $\rho = \rho_1 \otimes \rho_2$ with 
-$$\rho_1, \rho_2 \in \{e_1e_1^t, \ e_2e_2^t, \ (e_1e_2^t+e_2e_1^t)/2,
-\ i(e_1e_2^t-e_2e_1^t)/2 \}.$$
-
-In Step 1, we can use the encoding matrix $P_4$ constructed in Section 2.
-
-In Step 3, we use python set up the code to stimulate the channel.
-
-In Step 4, we can apply $B \mapsto P_4^\dag BP_4$.
 
