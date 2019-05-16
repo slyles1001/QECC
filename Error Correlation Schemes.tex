@@ -484,13 +484,12 @@ We may see whether 4-qubit, 5-qubit case also produce some funny noise pattern.
  
 
 \medskip
-For future research, 
-we plan to extend the techniques to more general quantum channels 
+For future research, we plan to extend the techniques to more general quantum channels 
 such as the fully correlated quantum channels on $n$-qubits
 with general noise of the form $U^{\otimes n}$, where $U \in M_2$
-is unitary.
+is unitary, or a non-classical 
 
-\section*{Acknowledgment}
+\section*{Acknowledgments}
 
 
 Li is an affiliate member of the Institute for Quantum Computing,
@@ -539,14 +538,10 @@ access channels,  Ph.D. dissertation, Electr. Eng. Dept., Stanford
 Univ., Stanford, CA, 2005.
  
 \bibitem{qiskit}
-  G.  Aleksandrowicz,  T.  Alexander,  P.  Barkoutsos,  L.  Bello,  Y.  BenHaim,  D.  Bucher,  F.  J.  Cabrera-Hernadez,  J.  Carballo-Franquis, A.  Chen,  C.-F.  Chen,  J.  M.  Chow,  A.  D.  Corcoles-Gonzales,  A.  J. Cross,  A.  Cross,  J.  Cruz-Benito,  C.  Culver,  S.  D.  L.  P.  Gonzalez, E.   D.   L.   Torre,   D.   Ding,   E.   Dumitrescu,   I.   Duran,   P.   Eendebak,  M.  Everitt,  I.  F.  Sertage,  A.  Frisch,  A.  Fuhrer,  J.  Gambetta, B.  G.  Gago,  J.  Gomez-Mosquera,  D.  Greenberg,  I.  Hamamura, V.  Havlicek,  J.  Hellmers,  Ł.  Herok,  H.  Horii,  S.  Hu,  T.  Imamichi, T. Itoko, A. Javadi-Abhari, N. Kanazawa, A. Karazeev, K. Krsulich,
-P. Liu, Y. Luh, Y. Maeng, M. Marques, F. J. Martin-Fernandez, D. T.
-McClure,  D.  McKay,  S.  Meesala,  A.  Mezzacapo,  N.  Moll,  D.  M. Rodriguez,  G.  Nannicini,  P.  Nation,  P.  Ollitrault,  L.  J.  O’Riordan, H.  Paik,  J.  Perez,  A.  Phan,  M.  Pistoia,  V.  Prutyanov,  M.  Reuter, J. Rice, A. R. Davila, R. H. P. Rudy, M. Ryu, N. Sathaye, C. Schnabel,
-E. Schoute, K. Setia, Y. Shi, A. Silva, Y. Siraichi, S. Sivarajah, J. A.
-Smolin, M. Soeken, H. Takahashi, I. Tavernelli, C. Taylor, P. Taylour,
-K.  Trabing,  M.  Treinish,  W.  Turner,  D.  Vogt-Lee,  C.  Vuillot,  J.  A.
-Wildstrom, J. Wilson, E. Winston, C. Wood, S. Wood, S. Worner, I. Y. Akhalwaya, and C. Zoufal, “Qiskit: An open-source framework for quantum computing,” 2019.
+  G.  Aleksandrowicz,  T.  Alexander,  P.  Barkoutsos,  L.  Bello,  Y.  BenHaim,  D.  Bucher,  F.  J.  Cabrera-Hernadez,  J.  Carballo-Franquis, A.  Chen,  C.-F.  Chen,  J.  M.  Chow,  A.  D.  Corcoles-Gonzales,  A.  J. Cross,  A.  Cross,  J.  Cruz-Benito,  C.  Culver,  S.  D.  L.  P.  Gonzalez, E.   D.   L.   Torre,   D.   Ding,   E.   Dumitrescu,   I.   Duran,   P.   Eendebak,  M.  Everitt,  I.  F.  Sertage,  A.  Frisch,  A.  Fuhrer,  J.  Gambetta, B.  G.  Gago,  J.  Gomez-Mosquera,  D.  Greenberg,  I.  Hamamura, V.  Havlicek,  J.  Hellmers,  Ł.  Herok,  H.  Horii,  S.  Hu,  T.  Imamichi, T. Itoko, A. Javadi-Abhari, N. Kanazawa, A. Karazeev, K. Krsulich, P. Liu, Y. Luh, Y. Maeng, M. Marques, F. J. Martin-Fernandez, D. T. McClure,  D.  McKay,  S.  Meesala,  A.  Mezzacapo,  N.  Moll,  D.  M. Rodriguez,  G.  Nannicini,  P.  Nation,  P.  Ollitrault,  L.  J.  O’Riordan, H.  Paik,  J.  Perez,  A.  Phan,  M.  Pistoia,  V.  Prutyanov,  M.  Reuter, J. Rice, A. R. Davila, R. H. P. Rudy, M. Ryu, N. Sathaye, C. Schnabel, E. Schoute, K. Setia, Y. Shi, A. Silva, Y. Siraichi, S. Sivarajah, J. A. Smolin, M. Soeken, H. Takahashi, I. Tavernelli, C. Taylor, P. Taylour, K.  Trabing,  M.  Treinish,  W.  Turner,  D.  Vogt-Lee,  C.  Vuillot,  J.  A. Wildstrom, J. Wilson, E. Winston, C. Wood, S. Wood, S. Worner, I. Y. Akhalwaya, and C. Zoufal, “Qiskit: An open-source framework for quantum computing,” 2019.
 
+\bibitem{ERR}
+ \verb|https://www.research.ibm.com/ibm-q/technology/devices/|
  
 \end{thebibliography}
 
@@ -759,10 +754,9 @@ Norm[Transpose[R[3]].Z[6].R[3] - KroneckerProduct[DZ,IdentityMatrix[2^4]]]
 
 \section{Python results}
 Similar to the other methods, we can verify the results in Python. 
-This is convenient because IBM has provided the \verb|qiskit| framework, and the encoding matrices
-can be extracted from the circuit build.
+This is convenient because IBM has provided the \verb|qiskit| framework, and the encoding matrices can be extracted from a built circuit using the unitary backend \cite{qiskit}.
 
-In contrast to the matrix operations of sections A and B, the recursive scheme operates on the quantum circuit itself. For convenience, the imports have been omitted. 
+In contrast to the matrix operations of sections A and B, the recursive scheme operates on the quantum circuit itself. For convenience, the imports have been omitted, but can be found in the full code.
 
 To initialize a quantum circuit, we first create qubits using \verb|qr = QuantumRegister(n)| and classical bits for measurement with \verb|cr = ClassicalRegister(n)|. The quantum circuit is constructed by the \verb|qc = QuantumCircuit(qr, qc)|. To verify functionality, we can apply arbitrary unitary operations to initialize the state to a given vector. Then, the encoding scheme is defined recursively:
 
@@ -803,39 +797,31 @@ To initialize a quantum circuit, we first create qubits using \verb|qr = Quantum
 
 \subsection{Using IBM's simulated quantum computer}
 
-We can use the IBM's \verb|qasm| quantum computer simulator to validate our scheme. The results are identical to the above two sections, so we omit them here. All code is available at the github link at the beginning of the appendix.
-
-\noindent
- %\begin{minipage}[t]{0.64\columnwidth}
-For example, when $n = 3$, we can input $|q_2q_1q_0\ra = |000\ra$,
-and use $I_8, X_3, Y_3, Z_3$ as the error operators, respectively. Or we can use the 
-the error operators  ``blindly''. The simulation always give us the perfect statistics.
-For example, using input $|000\ra$ and error operator $X_3$, 
-the procedure in the following circuit diagram (IMB version of the one in Section 2.6) 
-changes the state $|000\ra$ to $|100\ra$, which is given 
-by the statistics of the IBM's quantum computer simulator.
-%\end{minipage}
-
-\vskip .5in 
-{\bf \hskip 1in  Circuit diagram here.} 
-
-
-\vskip -.7in 
-{\hfill \includegraphics[height=1.5in,width=2in]{./img/q3qasm.png}}
-
+We can use the IBM's \verb|qasm| quantum computer simulator to validate our scheme. The results are identical to the above two sections, so we omit them here. 
 
 One may consider using $|q_2\ra = U|0\ra$ and  $|q_1q_0\ra = V|00\ra$
 for unitary $U \in M_2, V \in M_4$, and apply our scheme.
-One should get perfect decoding of $|q_1q_0\ra = V|00\ra$.
-
-
-\vskip 1in 
-
-One may do simulation and get the statistics for $n = 4,5,6$, etc.
+One should get perfect decoding of $|q_1q_0\ra = V|00\ra$ with the qasm simulator. One may do simulation and get similar statistics for $n = 4,5,6$, etc.
 
 \subsection{Using IBM's quantum computer}
 
-We can use the IBM's online quantum computer (with noise) to implement our scheme.
+We can use IBM's online quantum computers to implement our scheme. We compare two different machines: Tenerife (\verb|ibmqx4|) and Yorktown (\verb|ibmqx2|) to show the discrepancy of error between the two. Yorktown has more than 9$\times$ the gate error of Tenerife, and 2.4$\times$ the readout error. This can be observed in the graphs of Figure \ref{fig:qecc3}.
+
+\medskip
+\begin{figure}
+    \centering
+    \includegraphics[height=1.35in,width=1.5in]{img/fixed_qecc3_00.png}
+    \includegraphics[height=1.35in,width=1.5in]{img/fixed_qecc3_01.png}
+    \includegraphics[height=1.35in,width=1.5in]{img/fixed_qecc3_10.png}
+    \includegraphics[height=1.35in,width=1.5in]{img/fixed_qecc3_11.png}
+    \caption{Graphs for Tenerife (pink) vs Yorktown (blue) on inputs rho = 00, 01, 10, 11}
+    \label{fig:qecc3}
+\end{figure}
+
+It is interesting to observe that for inputs $00, 01$ Tenerife is significantly better at preserving states than Yorktown. However, for the inputs $10, 11$ Tenerife is in fact worse at preserving the states. Also, for both of the computers, most of the error seems to take the form of $q_1$ flipping. In the case of 01 on Yorktown, the output is evenly split between the correct state and the flipped bit.
+
+We use $\sigma = 0$ but an arbitrary state sees the same results.
+The errors for $00, 01, 10, 11$ are $X, Y, Z, I$. Oddly, the run with the lowest accuracy was the run that contained no errors.
 
 For $n = 3$, we input $|000\ra$ and use the error operators $X_3, Y_3, Z_3$ 
 in three different experiments using the following circuit 
@@ -847,7 +833,7 @@ It is interesting to note that $q_1$ always attracts more noise.
 
 \medskip
 \centerline{
-\includegraphics[height=1.5in,width=2in]{./img/q3ibmqx2.png} \quad
+\includegraphics[height=1.5in,width=2in]{./img/qecc3_I00.png} \quad
 \includegraphics[height=1.5in,width=2in]{./img/q3ibmqx2Y.png} \quad
 \includegraphics[height=1.5in,width=2in]{./img/q3ibmqx2Z.png} \quad
 }
