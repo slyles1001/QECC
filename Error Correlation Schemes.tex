@@ -445,11 +445,11 @@ the IBM's quantum computing framework \verb|qiskit|.
 \medskip
 Several remarks are in order concerning the implementation.
 
-In Matlab, the we generate the encoding operation $P_n$ for $n \ge 2$, and check 
+In Matlab, we generate the encoding operation $P_n$ for $n \ge 2$, and check 
 the properties described in Propositions \ref{2.1} -- \ref{2.4}.
 Note that when the dimension is high, the matrices $P_n, X_n$, etc.\ are too big to display,
 and there are too many entries to check (though most of them are zeros).
-So, we just use the command \verb|norm(Pn'*Zn*AA*Zn*Pn - kron(S,R))| to compute the norm
+The command \verb|norm(Pn'*Zn*AA*Zn*Pn - kron(S,R))| computes the norm
 of the matrix $P_n^\dag Z_n P_n(\sigma \otimes \rho)P_n^\dag Z_n P_n - \sigma \otimes \rho$
 to confirm that it gives zero (up to machine error). In fact, in the odd case, when 
 we do not use the Hadamard gate to do encoding and decoding, the norm values of
@@ -458,8 +458,7 @@ is used (once in encoding and once in decoding), the norm value of matrices
 will yield a number at the order of the machine error. 
 
 
-In Mathematica,
-the computation of the norm of the matrix 
+In Mathematica, the norm of the matrix 
 $P_n^\dag \cE( P_n (\sigma \otimes \rho) P_n^\dag) P_n  
 -\tilde \sigma \otimes \rho$ is always exactly 0 even if the Hadamard
 gate is used in the even case.
@@ -469,18 +468,14 @@ $\sigma = \tilde \sigma \in D_4$ is one of the 4 classical binary bits if
 $n$ is even. This is due to Mathematica being an algebraic solver versus Matlab and Python.
 
 In the IBM quantum computer setting, it is interesting to note that 
-for $U \in \{I_2, X, Y, Z\}$, 
-when we apply the encoding scheme to 3-qubit
+for $U \in \{I_2, X, Y, Z\}$, when we apply the encoding scheme to 3-qubit
 $P_3 |q_2q_1q_0\ra$, then the error operator 
 $U^{\otimes 3}P_3 |q_2 q_1 q_0\ra$, and then the operator
 $P_n^\dag U^{\otimes 3}P_3 |q_2 q_1 q_0\ra$, the second
 qubit always attracts more error compared with the expected output $|q_2 q_1 Uq_0\ra$,
 even for the case when $U = I_2$. (See the figure in Appendix C.2.)
-It is curious to know why such a noise
-pattern will happen to our scheme.
-
-We may see whether 4-qubit, 5-qubit case also produce some funny noise pattern.
-
+We are curious to know why such a noise
+pattern is observed when implemented, but cannot speculate at this time.
 
  
 
@@ -488,7 +483,7 @@ We may see whether 4-qubit, 5-qubit case also produce some funny noise pattern.
 For future research, we plan to extend the techniques to more general quantum channels 
 such as the fully correlated quantum channels on $n$-qubits
 with general noise of the form $U^{\otimes n}$, where $U \in M_2$
-is unitary, or a non-classical 
+is unitary, or a non-classical bit. We also wish to further investigate the cause of the systemic errors in flipping the most significant bit of our systems.
 
 \section*{Acknowledgments}
 
@@ -571,7 +566,7 @@ All code is available here:
     https://github.com/slyles1001/QECC
 \end{verbatim}
 
-\section{Matlab results}
+\section{Matlab Results}
 
 We write a Matlab program to generate the matrices $X_n, Y_n, Z_n, P_n$,
 etc.,  and demonstrate our quantum error correction scheme
@@ -676,7 +671,7 @@ will confirm the scheme works.
 
 
 
-\section{Mathematica results}
+\section{Mathematica Results}
 
 We write a Mathematica program to generate the matrices 
 $X_n, Y_n, Z_n, P_n$, etc.,  and demonstrate our quantum error 
@@ -753,7 +748,7 @@ Norm[Transpose[R[3]].Z[6].R[3] - KroneckerProduct[DZ,IdentityMatrix[2^4]]]
 
 
 
-\section{Python results}
+\section{Python Results}
 Similar to the other methods, we can verify the results in Python. 
 This is convenient because IBM has provided the \verb|qiskit| framework, and the encoding matrices can be extracted from a built circuit using the unitary backend \cite{qiskit}.
 
@@ -798,20 +793,9 @@ To initialize a quantum circuit, we first create qubits using \verb|qr = Quantum
 
 We can use the IBM's \verb|qasm| quantum computer simulator to validate our scheme. The results are identical to the above two sections, so we omit them here. The \verb|qasm| computer is deterministic, so an input $|q_2\ra = U|0\ra$ and  $|q_1q_0\ra = V|00\ra$ for unitary $U \in M_2, V \in M_4$ returns a perfect decoding. Similar statistics may be obtained for $n = 4,5,6$, etc.
 
-\subsection{Using IBM's quantum computer}
+\section{IBM Quantum Computer Results}
 
 We use IBM's online quantum computers to indicate implement our scheme. We compare two different machines: Tenerife (\verb|ibmqx4|, pink in graphs) and Yorktown (\verb|ibmqx2|, blue) to show the discrepancy of prediction quality between the two. Yorktown has more than 9$\times$ the gate error of Tenerife, and 2.4$\times$ the readout error. This can be observed in the graphs of Table \ref{tbl:sig0}.
-
-% \medskip
-% \begin{figure}
-%     \centering
-%     \includegraphics[height=1.35in,width=1.5in]{img/fixed_qecc3_00.png}
-%     \includegraphics[height=1.35in,width=1.5in]{img/fixed_qecc3_01.png}
-%     \includegraphics[height=1.35in,width=1.5in]{img/fixed_qecc3_10.png}
-%     \includegraphics[height=1.35in,width=1.5in]{img/fixed_qecc3_11.png}
-%     \caption{Graphs for Tenerife (pink) vs Yorktown (blue) on inputs rho = 00, 01, 10, 11}
-%     \label{fig:qecc3}
-% \end{figure}
 
 We have three experimental results: $\sigma = 0$ in Table \ref{tbl:sig0}, $\sigma = 1$ in Table \ref{tbl:sig1}, and $\sigma$ is a randomly generated state in Table \ref{tbl:sigR}.
 
@@ -1017,5 +1001,14 @@ Also of interest is the fact that, emperically, the accuracy is dependent on $\s
 \caption{Inputs and Errors on random sigma, Legend: Tenerife (pink) and Yorktown (blue)}\label{tbl:sigR}
 \end{table}
 
+We can test the encoding scheme on $\ket{0000}$ and $\ket{00000}$, as shown in Figure \ref{fig:q45}. In the case of 4 qubits, Tenerife finds the correct output, but neither computer has fidelity in the 5 qubit case. 
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=.45\textwidth]{img/qecc4_X0000.png}
+\includegraphics[width=.45\textwidth]{img/qecc5_X00000.png}
+\caption{QECC on 4 and 5 qubits}
+\label{fig:q45}
+\end{figure}
 \end{document}
 
