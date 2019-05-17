@@ -5,6 +5,7 @@
 \usepackage{graphicx}
 \usepackage{qcircuit}
 \usepackage{upquote}
+\usepackage{array}
 
 \setlength{\oddsidemargin}{-0.15in}
 \setlength{\topmargin}{-0.5in}
@@ -831,12 +832,144 @@ We get the following statistics of the experiments.
 The expected measured state always has the highest  probability.
 It is interesting to note that $q_1$ always attracts more noise.
 
-\medskip
-\centerline{
-\includegraphics[height=1.5in,width=2in]{./img/qecc3_I00.png} \quad
-\includegraphics[height=1.5in,width=2in]{./img/q3ibmqx2Y.png} \quad
-\includegraphics[height=1.5in,width=2in]{./img/q3ibmqx2Z.png} \quad
-}
+% \medskip
+% \centerline{
+% \includegraphics[height=1.5in,width=2in]{./img/qecc3_I00.png} \quad
+% \includegraphics[height=1.5in,width=2in]{./img/q3ibmqx2Y.png} \quad
+% \includegraphics[height=1.5in,width=2in]{./img/q3ibmqx2Z.png} \quad
+% }
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{| c | c | c | c | c | }
+      \hline
+      & X error & Y error & Z error & No error \\ 
+      \hline
+      00 & 
+      \begin{minipage}{.215\textwidth}
+        \includegraphics[width=\linewidth]{img/qecc3_X00.png}
+      \end{minipage}&
+      \begin{minipage}{.215\textwidth}
+        \includegraphics[width=\linewidth]{img/qecc3_Y00.png}
+      \end{minipage}
+      &\begin{minipage}{.215\textwidth}
+        \includegraphics[width=\linewidth]{img/qecc3_Z00.png}
+      \end{minipage}
+      &\begin{minipage}{.215\textwidth}
+        \includegraphics[width=\linewidth]{img/qecc3_I00.png}
+      \end{minipage}
+      \\ \hline
+      01 & 
+      \begin{minipage}{.215\textwidth}
+        \includegraphics[width=\linewidth]{img/qecc3_X01.png}
+      \end{minipage}&
+      \begin{minipage}{.215\textwidth}
+        \includegraphics[width=\linewidth]{img/qecc3_Y01.png}
+      \end{minipage}
+      &\begin{minipage}{.215\textwidth}
+        \includegraphics[width=\linewidth]{img/qecc3_Z01.png}
+      \end{minipage}
+      &\begin{minipage}{.215\textwidth}
+        \includegraphics[width=\linewidth]{img/qecc3_I01.png}
+      \end{minipage}
+      \\ \hline
+      10 & 
+      \begin{minipage}{.215\textwidth}
+        \includegraphics[width=\linewidth]{img/qecc3_X10.png}
+      \end{minipage}&
+      \begin{minipage}{.215\textwidth}
+        \includegraphics[width=\linewidth]{img/qecc3_Y10.png}
+      \end{minipage}
+      &\begin{minipage}{.215\textwidth}
+        \includegraphics[width=\linewidth]{img/qecc3_Z10.png}
+      \end{minipage}
+      &\begin{minipage}{.215\textwidth}
+        \includegraphics[width=\linewidth]{img/qecc3_I10.png}
+      \end{minipage}
+      \\ \hline
+      11 & 
+      \begin{minipage}{.215\textwidth}
+        \includegraphics[width=\linewidth]{img/qecc3_X11.png}
+      \end{minipage}&
+      \begin{minipage}{.215\textwidth}
+        \includegraphics[width=\linewidth]{img/qecc3_Y11.png}
+      \end{minipage}
+      &\begin{minipage}{.215\textwidth}
+        \includegraphics[width=\linewidth]{img/qecc3_Z11.png}
+      \end{minipage}
+      &\begin{minipage}{.215\textwidth}
+        \includegraphics[width=\linewidth]{img/qecc3_I11.png}
+      \end{minipage}
+      \\ \hline
+    \end{tabular}
+    \caption{Comparing Inputs and Errors, sigma = 0}\label{tbl:sig0}
+  \end{table}
+  
+\begin{table}[h!]
+\centering
+\begin{tabular}{| c | c | c | c | c | }
+    \hline
+    & X error & Y error & Z error & No error \\ 
+    \hline
+    00 & 
+    \begin{minipage}{.215\textwidth}
+    \includegraphics[width=\linewidth]{img/rand_qecc3_X00.png}
+    \end{minipage}&
+    \begin{minipage}{.215\textwidth}
+    \includegraphics[width=\linewidth]{img/rand_qecc3_Y00.png}
+    \end{minipage}
+    &\begin{minipage}{.215\textwidth}
+    \includegraphics[width=\linewidth]{img/rand_qecc3_Z00.png}
+    \end{minipage}
+    &\begin{minipage}{.215\textwidth}
+    \includegraphics[width=\linewidth]{img/rand_qecc3_I00.png}
+    \end{minipage}
+    \\ \hline
+    01 & 
+    \begin{minipage}{.215\textwidth}
+    \includegraphics[width=\linewidth]{img/rand_qecc3_X01.png}
+    \end{minipage}&
+    \begin{minipage}{.215\textwidth}
+    \includegraphics[width=\linewidth]{img/rand_qecc3_Y01.png}
+    \end{minipage}
+    &\begin{minipage}{.215\textwidth}
+    \includegraphics[width=\linewidth]{img/rand_qecc3_Z01.png}
+    \end{minipage}
+    &\begin{minipage}{.215\textwidth}
+    \includegraphics[width=\linewidth]{img/rand_qecc3_I01.png}
+    \end{minipage}
+    \\ \hline
+    10 & 
+    \begin{minipage}{.215\textwidth}
+    \includegraphics[width=\linewidth]{img/rand_qecc3_X10.png}
+    \end{minipage}&
+    \begin{minipage}{.215\textwidth}
+    \includegraphics[width=\linewidth]{img/rand_qecc3_Y10.png}
+    \end{minipage}
+    &\begin{minipage}{.215\textwidth}
+    \includegraphics[width=\linewidth]{img/rand_qecc3_Z10.png}
+    \end{minipage}
+    &\begin{minipage}{.215\textwidth}
+    \includegraphics[width=\linewidth]{img/rand_qecc3_I10.png}
+    \end{minipage}
+    \\ \hline
+    11 & 
+    \begin{minipage}{.215\textwidth}
+    \includegraphics[width=\linewidth]{img/rand_qecc3_X11.png}
+    \end{minipage}&
+    \begin{minipage}{.215\textwidth}
+    \includegraphics[width=\linewidth]{img/rand_qecc3_Y11.png}
+    \end{minipage}
+    &\begin{minipage}{.215\textwidth}
+    \includegraphics[width=\linewidth]{img/rand_qecc3_Z11.png}
+    \end{minipage}
+    &\begin{minipage}{.215\textwidth}
+    \includegraphics[width=\linewidth]{img/rand_qecc3_I11.png}
+    \end{minipage}
+    \\ \hline
+\end{tabular}
+\caption{Comparing Inputs and Errors, random sigma}\label{tbl:sigR}
+\end{table}
+
 
 One may consider using $|q_2\ra = U|0\ra$ and  $|q_1q_0\ra = V|00\ra$
 for unitary $U \in M_2, V \in M_4$, and apply our scheme.
