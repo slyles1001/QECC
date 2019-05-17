@@ -796,48 +796,29 @@ To initialize a quantum circuit, we first create qubits using \verb|qr = Quantum
         return()
 \end{verbatim}
 
-\subsection{Using IBM's simulated quantum computer}
-
-We can use the IBM's \verb|qasm| quantum computer simulator to validate our scheme. The results are identical to the above two sections, so we omit them here. 
-
-One may consider using $|q_2\ra = U|0\ra$ and  $|q_1q_0\ra = V|00\ra$
-for unitary $U \in M_2, V \in M_4$, and apply our scheme.
-One should get perfect decoding of $|q_1q_0\ra = V|00\ra$ with the qasm simulator. One may do simulation and get similar statistics for $n = 4,5,6$, etc.
+We can use the IBM's \verb|qasm| quantum computer simulator to validate our scheme. The results are identical to the above two sections, so we omit them here. The \verb|qasm| computer is deterministic, so an input $|q_2\ra = U|0\ra$ and  $|q_1q_0\ra = V|00\ra$ for unitary $U \in M_2, V \in M_4$ returns a perfect decoding. Similar statistics may be obtained for $n = 4,5,6$, etc.
 
 \subsection{Using IBM's quantum computer}
 
-We can use IBM's online quantum computers to implement our scheme. We compare two different machines: Tenerife (\verb|ibmqx4|) and Yorktown (\verb|ibmqx2|) to show the discrepancy of error between the two. Yorktown has more than 9$\times$ the gate error of Tenerife, and 2.4$\times$ the readout error. This can be observed in the graphs of Figure \ref{fig:qecc3}.
-
-\medskip
-\begin{figure}
-    \centering
-    \includegraphics[height=1.35in,width=1.5in]{img/fixed_qecc3_00.png}
-    \includegraphics[height=1.35in,width=1.5in]{img/fixed_qecc3_01.png}
-    \includegraphics[height=1.35in,width=1.5in]{img/fixed_qecc3_10.png}
-    \includegraphics[height=1.35in,width=1.5in]{img/fixed_qecc3_11.png}
-    \caption{Graphs for Tenerife (pink) vs Yorktown (blue) on inputs rho = 00, 01, 10, 11}
-    \label{fig:qecc3}
-\end{figure}
-
-It is interesting to observe that for inputs $00, 01$ Tenerife is significantly better at preserving states than Yorktown. However, for the inputs $10, 11$ Tenerife is in fact worse at preserving the states. Also, for both of the computers, most of the error seems to take the form of $q_1$ flipping. In the case of 01 on Yorktown, the output is evenly split between the correct state and the flipped bit.
-
-We use $\sigma = 0$ but an arbitrary state sees the same results.
-The errors for $00, 01, 10, 11$ are $X, Y, Z, I$. Oddly, the run with the lowest accuracy was the run that contained no errors.
-
-For $n = 3$, we input $|000\ra$ and use the error operators $X_3, Y_3, Z_3$ 
-in three different experiments using the following circuit 
-(IMB version of the one in Section 2.6). 
-The expected results states should be $|100\ra, |100\ra, |000\ra,$ respectively.
-We get the following statistics of the experiments.
-The expected measured state always has the highest  probability.
-It is interesting to note that $q_1$ always attracts more noise.
+We use IBM's online quantum computers to indicate implement our scheme. We compare two different machines: Tenerife (\verb|ibmqx4|, pink in graphs) and Yorktown (\verb|ibmqx2|, blue) to show the discrepancy of prediction quality between the two. Yorktown has more than 9$\times$ the gate error of Tenerife, and 2.4$\times$ the readout error. This can be observed in the graphs of Table \ref{tbl:sig0}.
 
 % \medskip
-% \centerline{
-% \includegraphics[height=1.5in,width=2in]{./img/qecc3_I00.png} \quad
-% \includegraphics[height=1.5in,width=2in]{./img/q3ibmqx2Y.png} \quad
-% \includegraphics[height=1.5in,width=2in]{./img/q3ibmqx2Z.png} \quad
-% }
+% \begin{figure}
+%     \centering
+%     \includegraphics[height=1.35in,width=1.5in]{img/fixed_qecc3_00.png}
+%     \includegraphics[height=1.35in,width=1.5in]{img/fixed_qecc3_01.png}
+%     \includegraphics[height=1.35in,width=1.5in]{img/fixed_qecc3_10.png}
+%     \includegraphics[height=1.35in,width=1.5in]{img/fixed_qecc3_11.png}
+%     \caption{Graphs for Tenerife (pink) vs Yorktown (blue) on inputs rho = 00, 01, 10, 11}
+%     \label{fig:qecc3}
+% \end{figure}
+
+We have three experimental results: $\sigma = 0$ in Table \ref{tbl:sig0}, $\sigma = 1$ in Table \ref{tbl:sig1}, and $\sigma$ is a randomly generated state in Table \ref{tbl:sigR}.
+
+For $\sigma = 0$, it is interesting to observe that for inputs $00, 01$ Tenerife is significantly better at preserving states than Yorktown. For both of the computers, most of the error seems to take the form of $q_1$ flipping. In the case of 01 on Yorktown, the output is evenly split between the correct state and the flipped bit state 11.
+
+Also of interest is the fact that, emperically, the accuracy is dependent on $\sigma$. In the case of random $\sigma$, Yorktown is essentially ineffective at maintaining the state with the given encoding. 
+
 \begin{table}[h!]
     \centering
     \begin{tabular}{| c | c | c | c | c | }
@@ -901,9 +882,75 @@ It is interesting to note that $q_1$ always attracts more noise.
       \end{minipage}
       \\ \hline
     \end{tabular}
-    \caption{Comparing Inputs and Errors, sigma = 0}\label{tbl:sig0}
+    \caption{Inputs and Errors on sigma = 0, Legend: Tenerife (pink) and Yorktown (blue)}\label{tbl:sig0}
+\end{table}
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{| c | c | c | c | c | }
+      \hline
+      & X error & Y error & Z error & No error \\ 
+      \hline
+      00 & 
+      \begin{minipage}{.215\textwidth}
+        \includegraphics[width=\linewidth]{img/one_qecc3_X00.png}
+      \end{minipage}&
+      \begin{minipage}{.215\textwidth}
+        \includegraphics[width=\linewidth]{img/one_qecc3_Y00.png}
+      \end{minipage}
+      &\begin{minipage}{.215\textwidth}
+        \includegraphics[width=\linewidth]{img/one_qecc3_Z00.png}
+      \end{minipage}
+      &\begin{minipage}{.215\textwidth}
+        \includegraphics[width=\linewidth]{img/one_qecc3_I00.png}
+      \end{minipage}
+      \\ \hline
+      01 & 
+      \begin{minipage}{.215\textwidth}
+        \includegraphics[width=\linewidth]{img/one_qecc3_X01.png}
+      \end{minipage}&
+      \begin{minipage}{.215\textwidth}
+        \includegraphics[width=\linewidth]{img/one_qecc3_Y01.png}
+      \end{minipage}
+      &\begin{minipage}{.215\textwidth}
+        \includegraphics[width=\linewidth]{img/one_qecc3_Z01.png}
+      \end{minipage}
+      &\begin{minipage}{.215\textwidth}
+        \includegraphics[width=\linewidth]{img/one_qecc3_I01.png}
+      \end{minipage}
+      \\ \hline
+      10 & 
+      \begin{minipage}{.215\textwidth}
+        \includegraphics[width=\linewidth]{img/one_qecc3_X10.png}
+      \end{minipage}&
+      \begin{minipage}{.215\textwidth}
+        \includegraphics[width=\linewidth]{img/one_qecc3_Y10.png}
+      \end{minipage}
+      &\begin{minipage}{.215\textwidth}
+        \includegraphics[width=\linewidth]{img/one_qecc3_Z10.png}
+      \end{minipage}
+      &\begin{minipage}{.215\textwidth}
+        \includegraphics[width=\linewidth]{img/one_qecc3_I10.png}
+      \end{minipage}
+      \\ \hline
+      11 & 
+      \begin{minipage}{.215\textwidth}
+        \includegraphics[width=\linewidth]{img/one_qecc3_X11.png}
+      \end{minipage}&
+      \begin{minipage}{.215\textwidth}
+        \includegraphics[width=\linewidth]{img/one_qecc3_Y11.png}
+      \end{minipage}
+      &\begin{minipage}{.215\textwidth}
+        \includegraphics[width=\linewidth]{img/one_qecc3_Z11.png}
+      \end{minipage}
+      &\begin{minipage}{.215\textwidth}
+        \includegraphics[width=\linewidth]{img/one_qecc3_I11.png}
+      \end{minipage}
+      \\ \hline
+    \end{tabular}
+    \caption{Inputs and Errors on sigma = 1, Legend: Tenerife (pink) and Yorktown (blue)}\label{tbl:sig1}
   \end{table}
-  
+
 \begin{table}[h!]
 \centering
 \begin{tabular}{| c | c | c | c | c | }
@@ -967,15 +1014,8 @@ It is interesting to note that $q_1$ always attracts more noise.
     \end{minipage}
     \\ \hline
 \end{tabular}
-\caption{Comparing Inputs and Errors, random sigma}\label{tbl:sigR}
+\caption{Inputs and Errors on random sigma, Legend: Tenerife (pink) and Yorktown (blue)}\label{tbl:sigR}
 \end{table}
-
-
-One may consider using $|q_2\ra = U|0\ra$ and  $|q_1q_0\ra = V|00\ra$
-for unitary $U \in M_2, V \in M_4$, and apply our scheme.
-One should high probability of decoded state: $|q_1q_0\ra = V|00\ra$.
-
-
 
 \end{document}
 
